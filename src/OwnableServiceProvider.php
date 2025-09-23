@@ -2,6 +2,7 @@
 
 namespace Sowailem\Ownable;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -55,5 +56,9 @@ class OwnableServiceProvider extends ServiceProvider
         }
 
         $this->loadMigrationsFrom(dirname(__DIR__).'/database/migrations');
+
+        Blade::if('owns', function ($owner, $ownable) {
+            return app('ownable.owner')->check($owner, $ownable);
+        });
     }
 }
