@@ -45,6 +45,7 @@ php artisan migrate
 use Sowailem\Ownable\Traits\HasOwnables;
 use Sowailem\Ownable\Traits\IsOwnable;
 use Sowailem\Ownable\Contracts\Ownable as OwnableContract;
+use Sowailem\Ownable\Contracts\Owner as OwnerContract;
 
 // Owner model (e.g., User)
 class User extends Authenticatable implements OwnerContract
