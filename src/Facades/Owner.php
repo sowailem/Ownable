@@ -25,6 +25,6 @@ class Owner extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'owner';
+        return 'ownable.owner';
     }
 }
