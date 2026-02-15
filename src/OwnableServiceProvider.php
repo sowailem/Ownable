@@ -87,8 +87,15 @@ class OwnableServiceProvider extends ServiceProvider
             'prefix' => config('ownable.routes.prefix', 'api/ownable'),
             'middleware' => config('ownable.routes.middleware', ['api']),
         ], function () {
-            Route::post('ownerships', [\Sowailem\Ownable\Http\Controllers\OwnershipController::class, 'store']);
-            Route::get('ownerships', [\Sowailem\Ownable\Http\Controllers\OwnershipController::class, 'index']);
+            Route::post('ownerships', \Sowailem\Ownable\Http\Controllers\Ownership\CreateOwnershipController::class);
+            Route::get('ownerships', \Sowailem\Ownable\Http\Controllers\Ownership\ListOwnershipController::class);
+
+            Route::get('ownable-models', \Sowailem\Ownable\Http\Controllers\OwnableModel\ListOwnableModelController::class);
+            Route::post('ownable-models', \Sowailem\Ownable\Http\Controllers\OwnableModel\CreateOwnableModelController::class);
+            Route::get('ownable-models/{ownable_model}', \Sowailem\Ownable\Http\Controllers\OwnableModel\ViewOwnableModelController::class);
+            Route::put('ownable-models/{ownable_model}', \Sowailem\Ownable\Http\Controllers\OwnableModel\UpdateOwnableModelController::class);
+            Route::patch('ownable-models/{ownable_model}', \Sowailem\Ownable\Http\Controllers\OwnableModel\UpdateOwnableModelController::class);
+            Route::delete('ownable-models/{ownable_model}', \Sowailem\Ownable\Http\Controllers\OwnableModel\DeleteOwnableModelController::class);
         });
     }
 }

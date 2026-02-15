@@ -6,8 +6,12 @@ use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Sowailem\Ownable\Models\Ownership;
+use Sowailem\Ownable\Models\OwnableModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+
+use Sowailem\Ownable\Services\OwnershipService;
+use Sowailem\Ownable\Services\OwnableModelService;
 
 class AttachOwnershipMiddleware
 {
@@ -19,6 +23,26 @@ class AttachOwnershipMiddleware
     protected $ownableModels;
 
     /**
+     * @var \Sowailem\Ownable\Services\OwnershipService
+     */
+    protected $ownershipService;
+
+    /**
+     * @var \Sowailem\Ownable\Services\OwnableModelService
+     */
+    protected $ownableModelService;
+
+    /**
+     * @param \Sowailem\Ownable\Services\OwnershipService $ownershipService
+     * @param \Sowailem\Ownable\Services\OwnableModelService $ownableModelService
+     */
+    public function __construct(OwnershipService $ownershipService, OwnableModelService $ownableModelService)
+    {
+        $this->ownershipService = $ownershipService;
+        $this->ownableModelService = $ownableModelService;
+    }
+
+    /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -27,13 +51,13 @@ class AttachOwnershipMiddleware
      */
     public function handle(Request $request, Closure $next): mixed
     {
+        $this->ownableModels = $this->ownableModelService->getActiveModelClasses();
+
         $response = $next($request);
 
         if (!config('ownable.automatic_attachment.enabled', true)) {
             return $response;
         }
-
-        $this->ownableModels = config('ownable.ownable_models', []);
 
         if ($response instanceof JsonResponse) {
             $data = $response->getOriginalContent();
@@ -61,11 +85,7 @@ class AttachOwnershipMiddleware
             $key = config('ownable.automatic_attachment.key', 'ownership');
             
             if (in_array($class, $this->ownableModels)) {
-                $ownership = Ownership::with('owner')
-                    ->where('ownable_id', $data->getKey())
-                    ->where('ownable_type', $class)
-                    ->where('is_current', true)
-                    ->first();
+                $ownership = $this->ownershipService->getCurrentOwnership($class, $data->getKey());
 
                 if ($ownership) {
                     $array = $data->toArray();
@@ -77,7 +97,14 @@ class AttachOwnershipMiddleware
             return $data;
         }
 
-        if (is_array($data) || $data instanceof \ArrayAccess) {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->attachOwnershipToData($value);
+            }
+            return $data;
+        }
+
+        if ($data instanceof \ArrayAccess) {
             foreach ($data as $key => $value) {
                 $data[$key] = $this->attachOwnershipToData($value);
             }
@@ -99,11 +126,7 @@ class AttachOwnershipMiddleware
         if (in_array($class, $this->ownableModels)) {
             $key = config('ownable.automatic_attachment.key', 'ownership');
             
-            $ownership = Ownership::with('owner')
-                ->where('ownable_id', $model->getKey())
-                ->where('ownable_type', $class)
-                ->where('is_current', true)
-                ->first();
+            $ownership = $this->ownershipService->getCurrentOwnership($class, $model->getKey());
 
             if ($ownership) {
                 $model->setAttribute($key, $ownership);

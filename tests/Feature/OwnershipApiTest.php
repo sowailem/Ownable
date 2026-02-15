@@ -3,6 +3,7 @@
 namespace Sowailem\Ownable\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Gate;
 use Sowailem\Ownable\Models\Ownership;
 use Sowailem\Ownable\Tests\Models\Post;
 use Sowailem\Ownable\Tests\Models\User;
@@ -11,6 +12,13 @@ use Sowailem\Ownable\Tests\TestCase;
 class OwnershipApiTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Gate::define('view-ownerships', fn () => true);
+        Gate::define('create-ownership', fn () => true);
+    }
 
     /** @test */
     public function it_can_register_ownership_via_api()
