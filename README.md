@@ -1,205 +1,226 @@
 # Laravel Ownable Package
 
-A Laravel package to handle ownership relationships between Eloquent models. This package provides a simple and flexible way to manage ownership of any model by any other model in your Laravel application.
+A powerful, automated, and API-driven Laravel package to handle ownership relationships between Eloquent models. This package provides a seamless way to manage ownership, track history, and automatically attach ownership data to your API responses without needing to modify your models with traits or interfaces.
 
-## Features
+## Key Features
 
-- **Flexible Ownership**: Any model can own any other model
-- **Ownership Transfer**: Transfer ownership between different owners
-- **Ownership History**: Keep track of ownership changes over time
-- **Current Owner**: Easily retrieve the current owner of any ownable item
-- **Bulk Operations**: Check ownership status and manage multiple ownables
-- **Automatic Cleanup**: Automatically clean up ownership records when models are deleted
-- **Facade Support**: Use the convenient Owner facade for ownership operations
+- **Hands-off Integration**: No traits or interfaces required on your models.
+- **Automatic API Attachment**: Automatically inject ownership information into your JSON responses via middleware.
+- **Dynamic Registration**: Register "ownable" models through configuration or a dedicated REST API.
+- **Centralized Management**: Manage all ownership operations via the `Owner` facade or service.
+- **Ownership History**: Keep track of ownership changes over time.
+- **Built-in API Endpoints**: Ready-to-use routes for managing ownership and ownable model registrations.
+- **Blade Directive**: Simple `@owns` directive for UI-based authorization checks.
 
 ## Requirements
 
-- PHP ^8.0
-- Laravel ^9.0, ^10.0, ^11.0 or ^12.0
+- PHP ^8.3
+- Laravel ^12.0
 
 ## Installation
 
-Require the package via Composer:
+1. Require the package via Composer:
 
 ```bash
 composer require sowailem/ownable
 ```
 
-Publish the migration:
-
-```bash
-php artisan vendor:publish --provider="Sowailem\Ownable\OwnableServiceProvider" --tag="ownable-migrations"
-```
-
-Run the migration:
+2. Run the migrations:
 
 ```bash
 php artisan migrate
 ```
 
-## Usage Examples
+## Configuration
 
-### 1. Setting up models
+The `config/ownable.php` file allows you to customize:
 
-```php
-use Sowailem\Ownable\Traits\HasOwnables;
-use Sowailem\Ownable\Traits\IsOwnable;
-use Sowailem\Ownable\Contracts\Ownable as OwnableContract;
-use Sowailem\Ownable\Contracts\Owner as OwnerContract;
+- `owner_model`: The default model class that acts as an owner (e.g., `App\Models\User`).
+- `ownable_models`: An array of model classes that can be owned (static registration).
+- `routes`: Custom prefix and middleware for the built-in API.
+- `automatic_attachment`: Enable/disable automatic ownership injection and customize the response key.
 
-// Owner model (e.g., User)
-class User extends Authenticatable implements OwnerContract
-{
-    use HasOwnables;
-}
+## Usage Guide
 
-// Ownable model
-class Post extends Model implements OwnableContract
-{
-    use IsOwnable;
-}
-```
+### 1. Basic Operations
 
-### 2. Using the package
+The `Owner` facade is your primary tool for managing ownership relationships.
 
 #### Giving Ownership
+Assign ownership of any model to another. This automatically handles marking previous ownerships for that entity as inactive.
 
 ```php
-$user = User::first();
-$post = Post::first();
+use Sowailem\Ownable\Facades\Owner;
 
-// Give ownership
-$user->giveOwnershipTo($post);
-// Or
-$post->ownedBy($user);
-// Or using facade
+// A User owning a Post
 Owner::give($user, $post);
+
+// A Team owning a Project
+Owner::give($team, $project);
 ```
 
 #### Checking Ownership
+Quickly verify if a specific owner currently owns an entity.
 
 ```php
-// Check ownership
-if ($user->owns($post)) {
-    // User owns this post
-}
-// Or
-if ($post->isOwnedBy($user)) {
-    // Post is owned by this user
-}
-// Or using facade
 if (Owner::check($user, $post)) {
-    // Check ownership using facade
+    // Authorized
 }
 ```
 
 #### Transferring Ownership
+Transfer ownership from one entity to another.
 
 ```php
-// Transfer ownership
-$newOwner = User::find(2);
-$user->transferOwnership($post, $newOwner);
-// Or
-$post->transferOwnershipTo($newOwner);
-// Or using facade
-Owner::transfer($user, $newOwner, $post);
+Owner::transfer($oldOwner, $newOwner, $post);
 ```
 
-#### Retrieving Owned Items and Owners
+#### Retrieving Current Owner
+Get the actual model instance of the current owner.
 
 ```php
-// Get all owned items
-$user->ownables()->get();
-
-// Get current owner of an item
-$currentOwner = $post->currentOwner();
-
-// Get all owners (including historical)
-$allOwners = $post->owners()->get();
-
-// Get only current owners
-$currentOwners = $post->owners()->wherePivot('is_current', true)->get();
+$owner = Owner::currentOwner($post); // Returns User instance, Team instance, etc.
 ```
 
-#### Taking Ownership Away
+#### Removing Ownership
+Clear the current ownership without necessarily assigning a new one.
 
 ```php
-// Remove ownership
-$user->takeOwnershipFrom($post);
+Owner::remove($post);
+```
+
+### 2. Automatic API Attachment
+
+This is the most powerful feature of the package. The `AttachOwnershipMiddleware` is automatically registered globally. It recursively scans your JSON responses (from Controllers or API Resources) and injects ownership data for any model registered as "ownable".
+
+#### How it works:
+1. It looks for Eloquent models in your `JsonResponse`.
+2. It checks if the model class is registered in `config/ownable.php` or via the dynamic API.
+3. If matched, it fetches the current owner and appends it to the JSON object.
+
+#### Registration:
+Add models to `config/ownable.php`:
+```php
+'ownable_models' => [
+    \App\Models\Post::class,
+    \App\Models\Comment::class,
+],
+```
+
+#### JSON Response Example:
+Before:
+```json
+{
+    "id": 1,
+    "title": "Hello World"
+}
+```
+
+After (Automatic):
+```json
+{
+    "id": 1,
+    "title": "Hello World",
+    "ownership": {
+        "id": 45,
+        "owner_id": 1,
+        "owner_type": "User",
+        "ownable_id": 1,
+        "ownable_type": "Post",
+        "is_current": true,
+        "owner": {
+            "id": 1,
+            "name": "John Doe"
+        }
+    }
+}
+```
+
+#### Customization:
+You can change the injection key and toggle the feature in `config/ownable.php`:
+```php
+'automatic_attachment' => [
+    'enabled' => true,
+    'key' => 'meta_ownership', // Change "ownership" to something else
+],
+```
+
+### 3. Practical Examples
+
+#### Scenario A: Multi-Level Ownership
+You might have `Users` owning `Projects`, and `Projects` owning `Tasks`.
+
+```php
+// User owns Project
+Owner::give($user, $project);
+
+// Project owns Task
+Owner::give($project, $task);
+
+// Check if project owns task
+Owner::check($project, $task); // true
+```
+
+#### Scenario B: Middleware-based Authorization
+Create a custom middleware to protect routes based on ownership:
+
+```php
+public function handle($request, $next)
+{
+    $post = $request->route('post');
+    
+    if (!Owner::check($request->user(), $post)) {
+        abort(403);
+    }
+
+    return $next($request);
+}
+```
+
+#### Scenario C: Dynamic Registration Workflow
+Register models as "ownable" on the fly without changing code:
+
+```bash
+curl -X POST http://your-app.test/api/ownable/ownable-models \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Document", "model_class": "App\\Models\\Document", "description": "Client documents"}'
+```
+Now, all `Document` models returned in APIs will automatically include ownership data.
+
+### 3. Blade Directive
+
+Check ownership directly in your Blade views:
+
+```blade
+@owns($user, $post)
+    <button>Edit Post</button>
+@else
+    <span>Read Only</span>
+@endowns
 ```
 
 ## API Reference
 
-### HasOwnables Trait
+The package provides several endpoints for managing ownership (prefixed by `api/ownable` by default):
 
-Methods available on owner models:
+### Ownership Records
+- `GET /api/ownable/ownerships`: List and filter ownership history.
+- `POST /api/ownable/ownerships/give`: Give ownership of an ownable entity to an owner.
+- `POST /api/ownable/ownerships/transfer`: Transfer ownership from one owner to another.
+- `POST /api/ownable/ownerships/check`: Check if an owner owns a specific entity.
+- `POST /api/ownable/ownerships/remove`: Remove ownership of an entity.
+- `POST /api/ownable/ownerships/current`: Get the current owner of an entity.
 
-- `possessions()` - Relationship to ownership records
-- `ownables()` - Relationship to owned items
-- `owns($ownable)` - Check if owns a specific item
-- `giveOwnershipTo($ownable)` - Give ownership of an item
-- `takeOwnershipFrom($ownable)` - Remove ownership of an item
-- `transferOwnership($ownable, $newOwner)` - Transfer ownership to another owner
-
-### IsOwnable Trait
-
-Methods available on ownable models:
-
-- `ownerships()` - Relationship to ownership records
-- `owners()` - Relationship to owners
-- `currentOwner()` - Get the current owner
-- `ownedBy($owner)` - Set ownership to a specific owner
-- `isOwnedBy($owner)` - Check if owned by a specific owner
-- `transferOwnershipTo($newOwner)` - Transfer ownership to a new owner
-
-### Owner Facade
-
-Static methods available via the Owner facade:
-
-- `Owner::give($owner, $ownable)` - Give ownership
-- `Owner::check($owner, $ownable)` - Check ownership
-- `Owner::transfer($fromOwner, $toOwner, $ownable)` - Transfer ownership
-
-## Configuration
-
-You can publish the configuration file to customize the package behavior:
-
-```bash
-php artisan vendor:publish --provider="Sowailem\Ownable\OwnableServiceProvider" --tag="ownable-config"
-```
-
-The configuration allows you to customize:
-- Default owner model class
-- Default ownable model class
-- Database table name
-
-## Database Structure
-
-The package creates an `ownerships` table with the following structure:
-
-- `id` - Primary key
-- `owner_id` - ID of the owner model
-- `owner_type` - Class name of the owner model
-- `ownable_id` - ID of the ownable model
-- `ownable_type` - Class name of the ownable model
-- `is_current` - Boolean flag indicating if this is the current ownership
-- `created_at` - Timestamp when ownership was created
-- `updated_at` - Timestamp when ownership was last updated
+### Ownable Models (Dynamic Registration)
+- `GET /api/ownable/ownable-models`: List models registered for automatic attachment.
+- `POST /api/ownable/ownable-models`: Register a new model class as "ownable".
+- `GET|PUT|DELETE /api/ownable/ownable-models/{id}`: Manage specific ownable model registrations.
 
 ## Testing
 
 ```bash
 composer test
 ```
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security
-
-If you discover any security related issues, please email abdullah.sowailem@email.com instead of using the issue tracker.
-
 
 ## License
 

@@ -3,7 +3,10 @@
 namespace Sowailem\Ownable;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Http\Kernel;
+use Sowailem\Ownable\Http\Middleware\AttachOwnershipMiddleware;
 
 /**
  * Service provider for the Ownable package.
@@ -31,7 +34,7 @@ class OwnableServiceProvider extends ServiceProvider
         }
 
         $this->app->singleton('ownable.owner', function ($app) {
-            return new \Sowailem\Ownable\Owner();
+            return new \Sowailem\Ownable\Owner($app->make(\Sowailem\Ownable\Services\OwnershipService::class));
         });
     }
 
@@ -53,8 +56,50 @@ class OwnableServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(dirname(__DIR__).'/database/migrations');
 
+        $this->registerRoutes();
+
+        $this->registerMiddleware();
+
         Blade::if('owns', function ($owner, $ownable) {
             return app('ownable.owner')->check($owner, $ownable);
+        });
+    }
+
+    /**
+     * Register the package middleware.
+     *
+     * @return void
+     */
+    protected function registerMiddleware(): void
+    {
+        $kernel = $this->app->make(Kernel::class);
+        $kernel->pushMiddleware(AttachOwnershipMiddleware::class);
+    }
+
+    /**
+     * Register the package routes.
+     *
+     * @return void
+     */
+    protected function registerRoutes(): void
+    {
+        Route::group([
+            'prefix' => config('ownable.routes.prefix', 'api/ownable'),
+            'middleware' => config('ownable.routes.middleware', ['api']),
+        ], function () {
+            Route::get('ownerships', \Sowailem\Ownable\Http\Controllers\Ownership\ListOwnershipController::class);
+            Route::post('ownerships/give', \Sowailem\Ownable\Http\Controllers\Ownership\GiveOwnershipController::class);
+            Route::post('ownerships/transfer', \Sowailem\Ownable\Http\Controllers\Ownership\TransferOwnershipController::class);
+            Route::post('ownerships/check', \Sowailem\Ownable\Http\Controllers\Ownership\CheckOwnershipController::class);
+            Route::post('ownerships/remove', \Sowailem\Ownable\Http\Controllers\Ownership\RemoveOwnershipController::class);
+            Route::post('ownerships/current', \Sowailem\Ownable\Http\Controllers\Ownership\GetCurrentOwnerController::class);
+
+            Route::get('ownable-models', \Sowailem\Ownable\Http\Controllers\OwnableModel\ListOwnableModelController::class);
+            Route::post('ownable-models', \Sowailem\Ownable\Http\Controllers\OwnableModel\CreateOwnableModelController::class);
+            Route::get('ownable-models/{ownable_model}', \Sowailem\Ownable\Http\Controllers\OwnableModel\ViewOwnableModelController::class);
+            Route::put('ownable-models/{ownable_model}', \Sowailem\Ownable\Http\Controllers\OwnableModel\UpdateOwnableModelController::class);
+            Route::patch('ownable-models/{ownable_model}', \Sowailem\Ownable\Http\Controllers\OwnableModel\UpdateOwnableModelController::class);
+            Route::delete('ownable-models/{ownable_model}', \Sowailem\Ownable\Http\Controllers\OwnableModel\DeleteOwnableModelController::class);
         });
     }
 }

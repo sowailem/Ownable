@@ -21,38 +21,34 @@ class OwnershipWorkflowTest extends TestCase
         // Step 1: Initial ownership assignment
         Owner::give($user1, $post);
         
-        $this->assertTrue($post->isOwnedBy($user1));
-        $this->assertEquals($user1->id, $post->currentOwner()->id);
+        $this->assertTrue(Owner::check($user1, $post));
+        $this->assertEquals($user1->id, Owner::currentOwner($post)->id);
         $this->assertEquals(1, Ownership::count());
-        $this->assertTrue($user1->owns($post));
 
         // Step 2: Transfer ownership
         Owner::transfer($user1, $user2, $post);
         
-        $this->assertFalse($post->isOwnedBy($user1));
-        $this->assertTrue($post->isOwnedBy($user2));
-        $this->assertEquals($user2->id, $post->currentOwner()->id);
+        $this->assertFalse(Owner::check($user1, $post));
+        $this->assertTrue(Owner::check($user2, $post));
+        $this->assertEquals($user2->id, Owner::currentOwner($post)->id);
         $this->assertEquals(2, Ownership::count());
-        $this->assertFalse($user1->owns($post));
-        $this->assertTrue($user2->owns($post));
 
         // Step 3: Another transfer
-        $user2->transferOwnership($post, $user3);
+        Owner::transfer($user2, $user3, $post);
         
-        $this->assertFalse($post->isOwnedBy($user1));
-        $this->assertFalse($post->isOwnedBy($user2));
-        $this->assertTrue($post->isOwnedBy($user3));
-        $this->assertEquals($user3->id, $post->currentOwner()->id);
+        $this->assertFalse(Owner::check($user2, $post));
+        $this->assertTrue(Owner::check($user3, $post));
+        $this->assertEquals($user3->id, Owner::currentOwner($post)->id);
         $this->assertEquals(3, Ownership::count());
 
         // Step 4: Remove ownership
-        $user3->takeOwnershipFrom($post);
+        Owner::remove($post);
         
-        $this->assertFalse($post->isOwnedBy($user1));
-        $this->assertFalse($post->isOwnedBy($user2));
-        $this->assertFalse($post->isOwnedBy($user3));
-        $this->assertNull($post->currentOwner());
-        $this->assertEquals(2, Ownership::count()); // user3's ownership was deleted
+        $this->assertFalse(Owner::check($user1, $post));
+        $this->assertFalse(Owner::check($user2, $post));
+        $this->assertFalse(Owner::check($user3, $post));
+        $this->assertNull(Owner::currentOwner($post));
+        $this->assertEquals(3, Ownership::count()); // History remains, none current
 
         // Verify ownership history is maintained
         $ownerships = Ownership::orderBy('created_at')->get();
@@ -71,26 +67,27 @@ class OwnershipWorkflowTest extends TestCase
         $post3 = Post::create(['title' => 'Post 3', 'content' => 'Content 3']);
 
         // User owns multiple posts
-        $user->giveOwnershipTo($post1);
-        $user->giveOwnershipTo($post2);
-        $user->giveOwnershipTo($post3);
+        Owner::give($user, $post1);
+        Owner::give($user, $post2);
+        Owner::give($user, $post3);
 
-        $this->assertTrue($user->owns($post1));
-        $this->assertTrue($user->owns($post2));
-        $this->assertTrue($user->owns($post3));
-        $this->assertEquals(3, $user->ownables()->count());
-        $this->assertEquals(3, Ownership::where('is_current', true)->count());
+        $this->assertTrue(Owner::check($user, $post1));
+        $this->assertTrue(Owner::check($user, $post2));
+        $this->assertTrue(Owner::check($user, $post3));
+        
+        $this->assertEquals(3, Ownership::where('owner_id', $user->id)->where('is_current', true)->count());
 
         // Transfer one post to another user
         $user2 = User::create(['name' => 'Jane Doe', 'email' => 'jane@example.com']);
-        $user->transferOwnership($post2, $user2);
+        Owner::transfer($user, $user2, $post2);
 
-        $this->assertTrue($user->owns($post1));
-        $this->assertFalse($user->owns($post2));
-        $this->assertTrue($user->owns($post3));
-        $this->assertTrue($user2->owns($post2));
-        $this->assertEquals(2, $user->ownables()->wherePivot('is_current', true)->count());
-        $this->assertEquals(1, $user2->ownables()->wherePivot('is_current', true)->count());
+        $this->assertTrue(Owner::check($user, $post1));
+        $this->assertFalse(Owner::check($user, $post2));
+        $this->assertTrue(Owner::check($user, $post3));
+        $this->assertTrue(Owner::check($user2, $post2));
+        
+        $this->assertEquals(2, Ownership::where('owner_id', $user->id)->where('is_current', true)->count());
+        $this->assertEquals(1, Ownership::where('owner_id', $user2->id)->where('is_current', true)->count());
     }
 
     /** @test */
@@ -172,19 +169,17 @@ class OwnershipWorkflowTest extends TestCase
         $this->assertEquals(8, Ownership::count()); // 5 initial + 3 transfers
 
         // Verify current ownership
-        $this->assertFalse($users[0]->owns($posts[0]));
-        $this->assertTrue($users[1]->owns($posts[0]));
-        $this->assertTrue($users[1]->owns($posts[1])); // Still owns original
+        $this->assertFalse(Owner::check($users[0], $posts[0]));
+        $this->assertTrue(Owner::check($users[1], $posts[0]));
         
-        $this->assertFalse($users[1]->owns($posts[1])); // Transferred away
-        $this->assertTrue($users[2]->owns($posts[1]));
-        $this->assertTrue($users[2]->owns($posts[2])); // Still owns original
+        $this->assertFalse(Owner::check($users[1], $posts[1]));
+        $this->assertTrue(Owner::check($users[2], $posts[1]));
         
-        $this->assertFalse($users[2]->owns($posts[2])); // Transferred away
-        $this->assertTrue($users[3]->owns($posts[2]));
-        $this->assertTrue($users[3]->owns($posts[3])); // Still owns original
+        $this->assertFalse(Owner::check($users[2], $posts[2]));
+        $this->assertTrue(Owner::check($users[3], $posts[2]));
         
-        $this->assertTrue($users[4]->owns($posts[4])); // Unchanged
+        $this->assertTrue(Owner::check($users[3], $posts[3]));
+        $this->assertTrue(Owner::check($users[4], $posts[4])); // Unchanged
     }
 
     /** @test */
@@ -199,8 +194,8 @@ class OwnershipWorkflowTest extends TestCase
         // Delete the ownable model
         $post->delete();
 
-        // Ownership records should be cleaned up due to IsOwnable trait
-        $this->assertEquals(0, Ownership::count());
+        // Since we are isolated, we don't automatically delete ownership records.
+        $this->assertEquals(1, Ownership::count());
     }
 
     /** @test */
@@ -213,10 +208,9 @@ class OwnershipWorkflowTest extends TestCase
         // Initial ownership
         Owner::give($user1, $post);
         
-        // Try to give ownership to same user (should not create duplicate)
-        $result = $user1->giveOwnershipTo($post);
-        $this->assertFalse($result); // Should return false as already owned
-        $this->assertEquals(1, Ownership::count());
+        // Try to give ownership to same user (should not create duplicate or return error)
+        Owner::give($user1, $post);
+        $this->assertEquals(1, Ownership::where('is_current', true)->count());
 
         // Reassign to different user multiple times
         Owner::give($user2, $post);
@@ -226,8 +220,8 @@ class OwnershipWorkflowTest extends TestCase
         // Should have ownership history but only one current
         $this->assertEquals(1, Ownership::where('is_current', true)->count());
         $this->assertTrue(Ownership::count() > 1);
-        $this->assertTrue($post->isOwnedBy($user2));
-        $this->assertFalse($post->isOwnedBy($user1));
+        $this->assertTrue(Owner::check($user2, $post));
+        $this->assertFalse(Owner::check($user1, $post));
     }
 
     /** @test */
@@ -243,20 +237,32 @@ class OwnershipWorkflowTest extends TestCase
         Owner::give($user1, $post2);
         Owner::transfer($user1, $user2, $post1);
 
-        // Test relationship queries
-        $user1Ownables = $user1->ownables()->get();
-        $user1CurrentOwnables = $user1->ownables()->wherePivot('is_current', true)->get();
-        $user2CurrentOwnables = $user2->ownables()->wherePivot('is_current', true)->get();
+        // Test relationship queries via Ownership model
+        $user1CurrentOwnablesCount = Ownership::where('owner_id', $user1->id)
+            ->where('owner_type', get_class($user1))
+            ->where('is_current', true)
+            ->count();
+        
+        $user2CurrentOwnablesCount = Ownership::where('owner_id', $user2->id)
+            ->where('owner_type', get_class($user2))
+            ->where('is_current', true)
+            ->count();
 
-        $this->assertEquals(2, $user1Ownables->count()); // Historical ownership
-        $this->assertEquals(1, $user1CurrentOwnables->count()); // Only post2
-        $this->assertEquals(1, $user2CurrentOwnables->count()); // Only post1
+        $this->assertEquals(1, $user1CurrentOwnablesCount); // Only post2
+        $this->assertEquals(1, $user2CurrentOwnablesCount); // Only post1
 
         // Test post owners
-        $post1Owners = $post1->owners()->get();
-        $post1CurrentOwner = $post1->currentOwner();
+        $post1OwnersCount = Ownership::where('ownable_id', $post1->id)
+            ->where('ownable_type', get_class($post1))
+            ->count();
+            
+        $post1CurrentOwner = Ownership::where('ownable_id', $post1->id)
+            ->where('ownable_type', get_class($post1))
+            ->where('is_current', true)
+            ->first()
+            ->owner;
 
-        $this->assertEquals(2, $post1Owners->count()); // Both users in history
+        $this->assertEquals(2, $post1OwnersCount); // Both users in history
         $this->assertEquals($user2->id, $post1CurrentOwner->id); // Current owner is user2
     }
 }

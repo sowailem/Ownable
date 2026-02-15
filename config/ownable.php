@@ -14,12 +14,41 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Ownable Model
+    | Ownable Models
     |--------------------------------------------------------------------------
     |
-    | This is the default model that can be owned. You can override this
-    | on a per-model basis by implementing the Ownable contract.
+    | This is a list of models that can be owned. The package will automatically
+    | detect these models in responses and attach their ownership information.
     |
     */
-    'ownable_model' => env('OWNABLE_OWNABLE_MODEL', 'App\Models\Model'),
+    'ownable_models' => [
+        // 'App\Models\Post',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Routes Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This configuration controls the package's registration endpoints.
+    |
+    */
+    'routes' => [
+        'prefix' => 'api/ownable',
+        'middleware' => ['api'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Automatic Attachment Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This configuration controls the automatic attachment of ownership info
+    | to application responses.
+    |
+    */
+    'automatic_attachment' => [
+        'enabled' => env('OWNABLE_AUTO_ATTACH', true),
+        'key' => 'ownership',
+    ],
 ];

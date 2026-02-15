@@ -25,7 +25,7 @@
             <div class="flex justify-between items-center py-6">
                 <div class="flex items-center">
                     <h1 class="text-3xl font-bold text-primary">Laravel Ownable</h1>
-                    <span class="ml-3 px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">v1.0</span>
+                    <span class="ml-3 px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">v2.0</span>
                 </div>
                 <nav class="hidden md:flex space-x-8">
                     <a href="#installation" class="text-gray-600 hover:text-primary transition-colors">Installation</a>
@@ -40,8 +40,8 @@
     <!-- Hero Section -->
     <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-5xl font-bold mb-6">Laravel Ownable Package</h2>
-            <p class="text-xl mb-8 max-w-3xl mx-auto">A powerful Laravel package to handle ownership relationships between Eloquent models with flexibility, history tracking, and automatic cleanup.</p>
+            <h2 class="text-5xl font-bold mb-6">Automated Ownership Management</h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">A powerful Laravel package to handle ownership relationships between Eloquent models with zero configuration on models, automatic API responses, and dynamic registration.</p>
             <div class="flex justify-center space-x-4">
                 <a href="#installation" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">Get Started</a>
                 <a href="https://github.com/sowailem/ownable" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">View on GitHub</a>
@@ -64,8 +64,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3">Flexible Ownership</h3>
-                    <p class="text-gray-600">Any model can own any other model with polymorphic relationships</p>
+                    <h3 class="text-xl font-semibold mb-3">Hands-off Integration</h3>
+                    <p class="text-gray-600">No traits or interfaces required. Works with any Eloquent model out of the box.</p>
                 </div>
                 
                 <div class="bg-white p-8 rounded-xl shadow-sm border hover:shadow-md transition-shadow">
@@ -74,8 +74,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3">Ownership Transfer</h3>
-                    <p class="text-gray-600">Seamlessly transfer ownership between different owners</p>
+                    <h3 class="text-xl font-semibold mb-3">Automatic API Attachment</h3>
+                    <p class="text-gray-600">Automatically inject ownership information into your JSON responses via middleware</p>
                 </div>
                 
                 <div class="bg-white p-8 rounded-xl shadow-sm border hover:shadow-md transition-shadow">
@@ -94,8 +94,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3">Current Owner</h3>
-                    <p class="text-gray-600">Easily retrieve the current owner of any ownable item</p>
+                    <h3 class="text-xl font-semibold mb-3">Dynamic Registration</h3>
+                    <p class="text-gray-600">Register ownable models through config or dedicated API endpoints at runtime</p>
                 </div>
                 
                 <div class="bg-white p-8 rounded-xl shadow-sm border hover:shadow-md transition-shadow">
@@ -104,8 +104,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3">Automatic Cleanup</h3>
-                    <p class="text-gray-600">Automatically clean up ownership records when models are deleted</p>
+                    <h3 class="text-xl font-semibold mb-3">Blade Directive</h3>
+                    <p class="text-gray-600">Simple @owns directive for quick ownership checks in your Blade views</p>
                 </div>
                 
                 <div class="bg-white p-8 rounded-xl shadow-sm border hover:shadow-md transition-shadow">
@@ -114,8 +114,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3">Facade Support</h3>
-                    <p class="text-gray-600">Use the convenient Owner facade for ownership operations</p>
+                    <h3 class="text-xl font-semibold mb-3">Built-in API</h3>
+                    <p class="text-gray-600">Ready-to-use endpoints for managing ownership and registrations</p>
                 </div>
             </div>
         </div>
@@ -132,11 +132,11 @@
             <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-3 text-gray-900">PHP Version</h3>
-                    <p class="text-gray-600">PHP ^8.0 or higher</p>
+                    <p class="text-gray-600">PHP ^8.3 or higher</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-3 text-gray-900">Laravel Version</h3>
-                    <p class="text-gray-600">Laravel ^9.0, ^10.0, ^11.0, or ^12.0</p>
+                    <p class="text-gray-600">Laravel ^12.0</p>
                 </div>
             </div>
         </div>
@@ -166,20 +166,9 @@
                     <div class="bg-white p-8 rounded-xl shadow-sm border">
                         <div class="flex items-center mb-4">
                             <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full mr-3">Step 2</span>
-                            <h3 class="text-xl font-semibold">Publish Migration</h3>
-                        </div>
-                        <p class="text-gray-600 mb-4">Publish the migration file to create the ownerships table:</p>
-                        <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                            <code>php artisan vendor:publish --provider="Sowailem\Ownable\OwnableServiceProvider" --tag="ownable-migrations"</code>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white p-8 rounded-xl shadow-sm border">
-                        <div class="flex items-center mb-4">
-                            <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full mr-3">Step 3</span>
                             <h3 class="text-xl font-semibold">Run Migration</h3>
                         </div>
-                        <p class="text-gray-600 mb-4">Execute the migration to create the database table:</p>
+                        <p class="text-gray-600 mb-4">Execute the migration to create the database tables:</p>
                         <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
                             <code>php artisan migrate</code>
                         </div>
@@ -194,94 +183,40 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">Usage Guide</h2>
-                <p class="text-xl text-gray-600">Learn how to implement ownership relationships in your models</p>
+                <p class="text-xl text-gray-600">Learn how to manage ownership without modifying your models</p>
             </div>
             
             <div class="max-w-6xl mx-auto space-y-12">
-                <!-- Model Setup -->
-                <div class="bg-white p-8 rounded-xl shadow-sm border">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">1. Setting up Models</h3>
-                    <p class="text-gray-600 mb-6">First, implement the contracts and use the traits in your models:</p>
-                    
-                    <div class="grid lg:grid-cols-2 gap-6">
-                        <div>
-                            <h4 class="text-lg font-semibold mb-3 text-gray-800">Owner Model (e.g., User)</h4>
-                            <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">&lt;?php
-
-use Sowailem\Ownable\Traits\HasOwnables;
-use Sowailem\Ownable\Contracts\Owner as OwnerContract;
-
-class User extends Authenticatable implements OwnerContract
-{
-    use HasOwnables;
-    
-    // Your existing model code...
-}</code></pre>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h4 class="text-lg font-semibold mb-3 text-gray-800">Ownable Model (e.g., Post)</h4>
-                            <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">&lt;?php
-
-use Sowailem\Ownable\Traits\IsOwnable;
-use Sowailem\Ownable\Contracts\Ownable as OwnableContract;
-
-class Post extends Model implements OwnableContract
-{
-    use IsOwnable;
-    
-    // Your existing model code...
-}</code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
                 <!-- Basic Operations -->
                 <div class="bg-white p-8 rounded-xl shadow-sm border">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">2. Basic Operations</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">1. Basic Operations</h3>
+                    <p class="text-gray-600 mb-6">The <code>Owner</code> facade is your primary tool for managing ownership relationships. No traits or interfaces required on your models!</p>
                     
                     <div class="space-y-8">
                         <!-- Giving Ownership -->
                         <div>
                             <h4 class="text-lg font-semibold mb-3 text-gray-800">Giving Ownership</h4>
-                            <p class="text-gray-600 mb-4">There are multiple ways to assign ownership:</p>
+                            <p class="text-gray-600 mb-4">Assign ownership of any model to another. This automatically handles marking previous ownerships for that entity as inactive.</p>
                             <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">$user = User::first();
-$post = Post::first();
+                                <pre><code class="text-sm">use Sowailem\Ownable\Facades\Owner;
 
-// Method 1: Using owner model
-$user->giveOwnershipTo($post);
+// A User owning a Post
+Owner::give($user, $post);
 
-// Method 2: Using ownable model
-$post->ownedBy($user);
-
-// Method 3: Using facade
-Owner::give($user, $post);</code></pre>
+// A Team owning a Project
+Owner::give($team, $project);</code></pre>
                             </div>
                         </div>
                         
                         <!-- Checking Ownership -->
                         <div>
                             <h4 class="text-lg font-semibold mb-3 text-gray-800">Checking Ownership</h4>
-                            <p class="text-gray-600 mb-4">Verify if a user owns a specific item:</p>
+                            <p class="text-gray-600 mb-4">Quickly verify if a specific owner currently owns an entity:</p>
                             <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">// Method 1: Using owner model
-if ($user->owns($post)) {
-    // User owns this post
-}
+                                <pre><code class="text-sm">use Sowailem\Ownable\Facades\Owner;
 
-// Method 2: Using ownable model
-if ($post->isOwnedBy($user)) {
-    // Post is owned by this user
-}
-
-// Method 3: Using facade
 if (Owner::check($user, $post)) {
-    // Check ownership using facade
+    // Authorized
 }</code></pre>
                             </div>
                         </div>
@@ -289,59 +224,100 @@ if (Owner::check($user, $post)) {
                         <!-- Transferring Ownership -->
                         <div>
                             <h4 class="text-lg font-semibold mb-3 text-gray-800">Transferring Ownership</h4>
-                            <p class="text-gray-600 mb-4">Transfer ownership from one user to another:</p>
+                            <p class="text-gray-600 mb-4">Transfer ownership from one entity to another:</p>
                             <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">$newOwner = User::find(2);
+                                <pre><code class="text-sm">use Sowailem\Ownable\Facades\Owner;
 
-// Method 1: Using current owner
-$user->transferOwnership($post, $newOwner);
+Owner::transfer($oldOwner, $newOwner, $post);</code></pre>
+                            </div>
+                        </div>
 
-// Method 2: Using ownable model
-$post->transferOwnershipTo($newOwner);
-
-// Method 3: Using facade
-Owner::transfer($user, $newOwner, $post);</code></pre>
+                        <!-- Current Owner -->
+                        <div>
+                            <h4 class="text-lg font-semibold mb-3 text-gray-800">Retrieving Current Owner</h4>
+                            <p class="text-gray-600 mb-4">Get the actual model instance of the current owner:</p>
+                            <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                                <pre><code class="text-sm">$owner = Owner::currentOwner($post); // Returns User, Team, etc.</code></pre>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Advanced Usage -->
+                <!-- Automatic API Attachment -->
                 <div class="bg-white p-8 rounded-xl shadow-sm border">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">3. Advanced Usage</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">2. Automatic API Attachment</h3>
+                    <p class="text-gray-600 mb-4">This is the most powerful feature of the package. The <code>AttachOwnershipMiddleware</code> is automatically registered globally. It recursively scans your JSON responses and injects ownership data for any model registered as "ownable".</p>
                     
-                    <div class="space-y-8">
-                        <!-- Retrieving Data -->
+                    <h4 class="text-lg font-semibold mb-3 text-gray-800">How it works:</h4>
+                    <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
+                        <li>It looks for Eloquent models in your <code>JsonResponse</code>.</li>
+                        <li>It checks if the model class is registered in <code>config/ownable.php</code> or via the dynamic API.</li>
+                        <li>If matched, it fetches the current owner and appends it to the JSON object.</li>
+                    </ul>
+
+                    <h4 class="text-lg font-semibold mb-3 text-gray-800">Registration:</h4>
+                    <p class="text-gray-600 mb-4">Add models to your configuration:</p>
+                    <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-6">
+                        <pre><code class="text-sm">'ownable_models' => [
+    \App\Models\Post::class,
+    \App\Models\Comment::class,
+],</code></pre>
+                    </div>
+
+                    <h4 class="text-lg font-semibold mb-3 text-gray-800">JSON Response Example:</h4>
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
                         <div>
-                            <h4 class="text-lg font-semibold mb-3 text-gray-800">Retrieving Owned Items and Owners</h4>
+                            <p class="text-sm font-medium text-gray-500 mb-2">Original Response</p>
                             <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">// Get all items owned by a user
-$ownedItems = $user->ownables()->get();
-
-// Get current owner of an item
-$currentOwner = $post->currentOwner();
-
-// Get all owners (including historical)
-$allOwners = $post->owners()->get();
-
-// Get only current owners
-$currentOwners = $post->owners()->wherePivot('is_current', true)->get();
-
-// Get ownership history
-$ownershipHistory = $post->ownerships()->with('owner')->get();</code></pre>
+                                <pre><code class="text-xs">{
+    "id": 1,
+    "title": "Hello World"
+}</code></pre>
                             </div>
                         </div>
-                        
-                        <!-- Removing Ownership -->
                         <div>
-                            <h4 class="text-lg font-semibold mb-3 text-gray-800">Removing Ownership</h4>
+                            <p class="text-sm font-medium text-gray-500 mb-2">Enhanced Response (Automatic)</p>
                             <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">// Remove ownership completely
-$user->takeOwnershipFrom($post);
-
-// This will delete the ownership record entirely</code></pre>
+                                <pre><code class="text-xs">{
+    "id": 1,
+    "title": "Hello World",
+    "ownership": {
+        "id": 45,
+        "owner_id": 1,
+        "owner_type": "User",
+        "ownable_id": 1,
+        "ownable_type": "Post",
+        "is_current": true,
+        "owner": {
+            "id": 1,
+            "name": "John Doe"
+        }
+    }
+}</code></pre>
                             </div>
                         </div>
+                    </div>
+
+                    <h4 class="text-lg font-semibold mb-3 text-gray-800">Customization:</h4>
+                    <p class="text-gray-600 mb-4">Change the injection key in <code>config/ownable.php</code>:</p>
+                    <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                        <pre><code class="text-sm">'automatic_attachment' => [
+    'enabled' => true,
+    'key' => 'meta_ownership',
+],</code></pre>
+                    </div>
+                </div>
+
+                <!-- Blade Directive -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">3. Blade Directive</h3>
+                    <p class="text-gray-600 mb-6">Check ownership directly in your views with the <code>@owns</code> directive:</p>
+                    <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                        <pre><code class="text-sm">@owns($user, $post)
+    &lt;button&gt;Edit Post&lt;/button&gt;
+@else
+    &lt;span&gt;Read Only&lt;/span&gt;
+@endowns</code></pre>
                     </div>
                 </div>
             </div>
@@ -357,221 +333,108 @@ $user->takeOwnershipFrom($post);
             </div>
             
             <div class="max-w-6xl mx-auto space-y-12">
-                <!-- HasOwnables Trait -->
-                <div class="bg-white p-8 rounded-xl shadow-sm border">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">HasOwnables Trait</h3>
-                    <p class="text-gray-600 mb-6">Methods available on owner models that use the HasOwnables trait:</p>
-                    
-                    <div class="space-y-6">
-                        <div class="border-l-4 border-blue-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">possessions()</h4>
-                            <p class="text-gray-600 mb-2">Get all ownership records where this model is the owner.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Returns:</strong> \Illuminate\Database\Eloquent\Relations\MorphMany
-                            </div>
-                        </div>
-                        
-                        <div class="border-l-4 border-blue-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">ownables()</h4>
-                            <p class="text-gray-600 mb-2">Get all ownable entities owned by this owner.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Returns:</strong> \Illuminate\Database\Eloquent\Relations\MorphToMany
-                            </div>
-                        </div>
-                        
-                        <div class="border-l-4 border-blue-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">owns($ownable)</h4>
-                            <p class="text-gray-600 mb-2">Check if this owner owns the given ownable entity.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Parameters:</strong> $ownable - The ownable entity to check<br>
-                                <strong>Returns:</strong> bool - True if owns the entity, false otherwise
-                            </div>
-                        </div>
-                        
-                        <div class="border-l-4 border-blue-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">giveOwnershipTo($ownable)</h4>
-                            <p class="text-gray-600 mb-2">Give ownership of an ownable entity to this owner.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Parameters:</strong> $ownable - The ownable entity<br>
-                                <strong>Returns:</strong> bool - True if ownership was given successfully, false if already owned
-                            </div>
-                        </div>
-                        
-                        <div class="border-l-4 border-blue-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">takeOwnershipFrom($ownable)</h4>
-                            <p class="text-gray-600 mb-2">Remove ownership of an ownable entity from this owner.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Parameters:</strong> $ownable - The ownable entity<br>
-                                <strong>Returns:</strong> bool - True if ownership was removed successfully, false if not owned
-                            </div>
-                        </div>
-                        
-                        <div class="border-l-4 border-blue-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">transferOwnership($ownable, $newOwner)</h4>
-                            <p class="text-gray-600 mb-2">Transfer ownership of an ownable entity to a new owner.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Parameters:</strong> $ownable - The ownable entity, $newOwner - The new owner<br>
-                                <strong>Returns:</strong> bool - True if transfer was successful, false if not owned by this owner
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- IsOwnable Trait -->
-                <div class="bg-white p-8 rounded-xl shadow-sm border">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">IsOwnable Trait</h3>
-                    <p class="text-gray-600 mb-6">Methods available on ownable models that use the IsOwnable trait:</p>
-                    
-                    <div class="space-y-6">
-                        <div class="border-l-4 border-green-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">ownerships()</h4>
-                            <p class="text-gray-600 mb-2">Get all ownership records for this ownable entity.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Returns:</strong> \Illuminate\Database\Eloquent\Relations\MorphMany
-                            </div>
-                        </div>
-                        
-                        <div class="border-l-4 border-green-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">owners()</h4>
-                            <p class="text-gray-600 mb-2">Get all owners of this ownable entity.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Returns:</strong> \Illuminate\Database\Eloquent\Relations\MorphToMany
-                            </div>
-                        </div>
-                        
-                        <div class="border-l-4 border-green-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">currentOwner()</h4>
-                            <p class="text-gray-600 mb-2">Get the current owner of this ownable entity.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Returns:</strong> \Illuminate\Database\Eloquent\Model|null - The current owner or null if no current owner
-                            </div>
-                        </div>
-                        
-                        <div class="border-l-4 border-green-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">ownedBy($owner)</h4>
-                            <p class="text-gray-600 mb-2">Assign ownership of this entity to the given owner.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Parameters:</strong> $owner - The owner model<br>
-                                <strong>Returns:</strong> $this<br>
-                                <strong>Throws:</strong> \Exception when the model or owner is not saved
-                            </div>
-                        </div>
-                        
-                        <div class="border-l-4 border-green-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">isOwnedBy($owner)</h4>
-                            <p class="text-gray-600 mb-2">Check if this entity is owned by the given owner.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Parameters:</strong> $owner - The owner model to check<br>
-                                <strong>Returns:</strong> bool - True if owned by the given owner, false otherwise
-                            </div>
-                        </div>
-                        
-                        <div class="border-l-4 border-green-500 pl-6">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">transferOwnershipTo($newOwner)</h4>
-                            <p class="text-gray-600 mb-2">Transfer ownership of this entity to a new owner.</p>
-                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
-                                <strong>Parameters:</strong> $newOwner - The new owner model<br>
-                                <strong>Returns:</strong> $this
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
                 <!-- Owner Facade -->
                 <div class="bg-white p-8 rounded-xl shadow-sm border">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6">Owner Facade</h3>
                     <p class="text-gray-600 mb-6">Static methods available via the Owner facade:</p>
                     
                     <div class="space-y-6">
-                        <div class="border-l-4 border-purple-500 pl-6">
+                        <div class="border-l-4 border-blue-500 pl-6">
                             <h4 class="text-lg font-semibold text-gray-800 mb-2">Owner::give($owner, $ownable)</h4>
                             <p class="text-gray-600 mb-2">Give ownership of an ownable entity to an owner.</p>
                             <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
                                 <strong>Parameters:</strong> $owner - The owner model, $ownable - The ownable entity<br>
-                                <strong>Returns:</strong> mixed - The ownable entity with updated ownership<br>
-                                <strong>Throws:</strong> \InvalidArgumentException when parameters are invalid
+                                <strong>Returns:</strong> \Sowailem\Ownable\Models\Ownership
                             </div>
                         </div>
                         
-                        <div class="border-l-4 border-purple-500 pl-6">
+                        <div class="border-l-4 border-blue-500 pl-6">
                             <h4 class="text-lg font-semibold text-gray-800 mb-2">Owner::check($owner, $ownable)</h4>
                             <p class="text-gray-600 mb-2">Check if an owner owns a specific ownable entity.</p>
                             <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
                                 <strong>Parameters:</strong> $owner - The owner model to check, $ownable - The ownable entity<br>
-                                <strong>Returns:</strong> bool - True if the owner owns the entity, false otherwise<br>
-                                <strong>Throws:</strong> \InvalidArgumentException when parameters are invalid
+                                <strong>Returns:</strong> bool
                             </div>
                         </div>
                         
-                        <div class="border-l-4 border-purple-500 pl-6">
+                        <div class="border-l-4 border-blue-500 pl-6">
                             <h4 class="text-lg font-semibold text-gray-800 mb-2">Owner::transfer($fromOwner, $toOwner, $ownable)</h4>
                             <p class="text-gray-600 mb-2">Transfer ownership of an ownable entity from one owner to another.</p>
                             <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
                                 <strong>Parameters:</strong> $fromOwner - The current owner, $toOwner - The new owner, $ownable - The ownable entity<br>
-                                <strong>Returns:</strong> mixed - The ownable entity with transferred ownership<br>
-                                <strong>Throws:</strong> \InvalidArgumentException when parameters are invalid
+                                <strong>Returns:</strong> \Sowailem\Ownable\Models\Ownership
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-blue-500 pl-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">Owner::currentOwner($ownable)</h4>
+                            <p class="text-gray-600 mb-2">Get the current owner of an ownable entity.</p>
+                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
+                                <strong>Parameters:</strong> $ownable - The ownable entity<br>
+                                <strong>Returns:</strong> \Illuminate\Database\Eloquent\Model|null
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Database Structure -->
+                <!-- REST API Endpoints -->
                 <div class="bg-white p-8 rounded-xl shadow-sm border">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Database Structure</h3>
-                    <p class="text-gray-600 mb-6">The package creates an <code class="bg-gray-200 px-2 py-1 rounded text-sm">ownerships</code> table with the following structure:</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">REST API Endpoints</h3>
+                    <p class="text-gray-600 mb-6">The package provides built-in endpoints for managing ownership and registrations. These are prefixed with <code>/api/ownable</code> by default.</p>
                     
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Column</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">id</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">bigint</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Primary key</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">owner_id</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">bigint</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ID of the owner model</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">owner_type</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">varchar</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Class name of the owner model</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ownable_id</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">bigint</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ID of the ownable model</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ownable_type</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">varchar</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Class name of the ownable model</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">is_current</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">boolean</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Flag indicating if this is the current ownership</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">created_at</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">timestamp</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">When ownership was created</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">updated_at</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">timestamp</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">When ownership was last updated</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="space-y-6">
+                        <div class="border-l-4 border-indigo-500 pl-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">POST /api/ownable/ownerships/give</h4>
+                            <p class="text-gray-600 mb-2">Give ownership of an ownable entity to an owner.</p>
+                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
+                                <strong>Payload:</strong> owner_id, owner_type, ownable_id, ownable_type
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-indigo-500 pl-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">POST /api/ownable/ownerships/transfer</h4>
+                            <p class="text-gray-600 mb-2">Transfer ownership from one owner to another.</p>
+                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
+                                <strong>Payload:</strong> from_owner_id, from_owner_type, to_owner_id, to_owner_type, ownable_id, ownable_type
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-indigo-500 pl-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">POST /api/ownable/ownerships/check</h4>
+                            <p class="text-gray-600 mb-2">Check if an owner owns a specific entity.</p>
+                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
+                                <strong>Payload:</strong> owner_id, owner_type, ownable_id, ownable_type
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-indigo-500 pl-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">POST /api/ownable/ownerships/remove</h4>
+                            <p class="text-gray-600 mb-2">Remove ownership of an entity.</p>
+                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
+                                <strong>Payload:</strong> ownable_id, ownable_type
+                            </div>
+                        </div>
+
+                        <div class="border-l-4 border-indigo-500 pl-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">POST /api/ownable/ownerships/current</h4>
+                            <p class="text-gray-600 mb-2">Get the current owner of an entity.</p>
+                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
+                                <strong>Payload:</strong> ownable_id, ownable_type
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-500 pl-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">GET /api/ownable/ownerships</h4>
+                            <p class="text-gray-600 mb-2">List and filter ownership history records.</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-500 pl-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">POST /api/ownable/ownable-models</h4>
+                            <p class="text-gray-600 mb-2">Register a new model class for automatic ownership attachment dynamically.</p>
+                            <div class="bg-gray-100 p-3 rounded text-sm text-gray-700">
+                                <strong>Payload:</strong> name, model_class, description, is_active
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -589,205 +452,56 @@ $user->takeOwnershipFrom($post);
             <div class="max-w-6xl mx-auto space-y-12">
                 <!-- Blog System Example -->
                 <div class="bg-white p-8 rounded-xl shadow-sm border">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Blog System Example</h3>
-                    <p class="text-gray-600 mb-6">A complete example of implementing ownership in a blog system where users can own posts and transfer them to other users:</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Examples & Scenarios</h3>
                     
-                    <div class="space-y-6">
+                    <div class="space-y-12">
+                        <!-- Multi-Level -->
                         <div>
-                            <h4 class="text-lg font-semibold mb-3 text-gray-800">1. Model Setup</h4>
+                            <h4 class="text-xl font-semibold mb-3 text-gray-800">A. Multi-Level Ownership</h4>
+                            <p class="text-gray-600 mb-4">You might have <code>Users</code> owning <code>Projects</code>, and <code>Projects</code> owning <code>Tasks</code>. This is fully supported out of the box.</p>
                             <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">// User.php
-class User extends Authenticatable implements OwnerContract
-{
-    use HasOwnables;
-    
-    protected $fillable = ['name', 'email', 'password'];
-}
+                                <pre><code class="text-sm">// User owns Project
+Owner::give($user, $project);
 
-// Post.php
-class Post extends Model implements OwnableContract
-{
-    use IsOwnable;
-    
-    protected $fillable = ['title', 'content', 'published_at'];
+// Project owns Task
+Owner::give($project, $task);
+
+// Verify hierarchy
+if (Owner::check($project, $task)) {
+    // Project is the owner of this task
 }</code></pre>
                             </div>
                         </div>
-                        
+
+                        <!-- Authorization -->
                         <div>
-                            <h4 class="text-lg font-semibold mb-3 text-gray-800">2. Creating and Assigning Posts</h4>
+                            <h4 class="text-xl font-semibold mb-3 text-gray-800">B. Middleware Authorization</h4>
+                            <p class="text-gray-600 mb-4">Protect your routes easily using the <code>Owner</code> facade in your middleware or controllers.</p>
                             <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">// Create a new post and assign ownership
-$user = User::find(1);
-$post = Post::create([
-    'title' => 'My First Blog Post',
-    'content' => 'This is the content of my blog post...',
-    'published_at' => now()
-]);
-
-// Assign ownership
-$post->ownedBy($user);
-
-// Or using the owner model
-$user->giveOwnershipTo($post);</code></pre>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h4 class="text-lg font-semibold mb-3 text-gray-800">3. Authorization in Controllers</h4>
-                            <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">// PostController.php
-public function edit(Post $post)
+                                <pre><code class="text-sm">public function update(Request $request, Post $post)
 {
-    // Check if current user owns the post
-    if (!auth()->user()->owns($post)) {
-        abort(403, 'You do not own this post.');
+    if (!Owner::check($request->user(), $post)) {
+        abort(403, 'You do not own this resource.');
     }
-    
-    return view('posts.edit', compact('post'));
-}
 
-public function transfer(Post $post, User $newOwner)
-{
-    // Transfer ownership
-    if (auth()->user()->owns($post)) {
-        $post->transferOwnershipTo($newOwner);
-        return redirect()->back()->with('success', 'Post transferred successfully!');
-    }
-    
-    return redirect()->back()->with('error', 'You cannot transfer this post.');
+    $post->update($request->all());
 }</code></pre>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- E-commerce Example -->
-                <div class="bg-white p-8 rounded-xl shadow-sm border">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">E-commerce Store Example</h3>
-                    <p class="text-gray-600 mb-6">Managing product ownership in a multi-vendor e-commerce platform:</p>
-                    
-                    <div class="space-y-6">
+
+                        <!-- Dynamic -->
                         <div>
-                            <h4 class="text-lg font-semibold mb-3 text-gray-800">Vendor and Product Models</h4>
+                            <h4 class="text-xl font-semibold mb-3 text-gray-800">C. Dynamic Registration</h4>
+                            <p class="text-gray-600 mb-4">Register new models as ownable via the API without modifying your code. Perfect for CMS or highly dynamic applications.</p>
                             <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">// Vendor.php
-class Vendor extends Model implements OwnerContract
+                                <pre><code class="text-sm">// Request to register a new model class
+POST /api/ownable/ownable-models
 {
-    use HasOwnables;
-    
-    protected $fillable = ['name', 'email', 'store_name'];
-    
-    public function products()
-    {
-        return $this->ownables()->where('ownable_type', Product::class);
-    }
-}
-
-// Product.php
-class Product extends Model implements OwnableContract
-{
-    use IsOwnable;
-    
-    protected $fillable = ['name', 'description', 'price', 'stock'];
-    
-    public function vendor()
-    {
-        return $this->currentOwner();
-    }
+    "name": "Document",
+    "model_class": "App\\Models\\Document",
+    "description": "Client documents"
 }</code></pre>
-                            </div>
                         </div>
-                        
-                        <div>
-                            <h4 class="text-lg font-semibold mb-3 text-gray-800">Product Management</h4>
-                            <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                                <pre><code class="text-sm">// Create product and assign to vendor
-$vendor = Vendor::find(1);
-$product = Product::create([
-    'name' => 'Wireless Headphones',
-    'description' => 'High-quality wireless headphones...',
-    'price' => 99.99,
-    'stock' => 50
-]);
-
-$product->ownedBy($vendor);
-
-// Get all products for a vendor
-$vendorProducts = $vendor->products()->get();
-
-// Transfer product to another vendor
-$newVendor = Vendor::find(2);
-$product->transferOwnershipTo($newVendor);</code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- File Management Example -->
-                <div class="bg-white p-8 rounded-xl shadow-sm border">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">File Management System</h3>
-                    <p class="text-gray-600 mb-6">Managing file ownership with history tracking:</p>
-                    
-                    <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-                        <pre><code class="text-sm">// File.php
-class File extends Model implements OwnableContract
-{
-    use IsOwnable;
-    
-    protected $fillable = ['name', 'path', 'size', 'mime_type'];
-    
-    public function getOwnershipHistory()
-    {
-        return $this->ownerships()
-            ->with('owner')
-            ->orderBy('created_at', 'desc')
-            ->get();
-    }
-}
-
-// Usage
-$file = File::find(1);
-$history = $file->getOwnershipHistory();
-
-foreach ($history as $ownership) {
-    echo "Owned by: " . $ownership->owner->name . " from " . $ownership->created_at;
-}</code></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Configuration Section -->
-    <section class="py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Configuration</h2>
-                <p class="text-lg text-gray-600">Optional configuration for advanced usage</p>
-            </div>
-            
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-white p-8 rounded-xl shadow-sm border">
-                    <h3 class="text-xl font-semibold mb-4">Publishing Configuration</h3>
-                    <p class="text-gray-600 mb-4">You can publish the configuration file to customize the package behavior:</p>
-                    <div class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-6">
-                        <code>php artisan vendor:publish --provider="Sowailem\Ownable\OwnableServiceProvider" --tag="ownable-config"</code>
-                    </div>
-                    
-                    <h4 class="text-lg font-semibold mb-3">Available Configuration Options</h4>
-                    <div class="space-y-4">
-                        <div class="border-l-4 border-blue-500 pl-4">
-                            <h5 class="font-semibold text-gray-800">owner_model</h5>
-                            <p class="text-gray-600 text-sm">Default owner model class (default: 'App\Models\User')</p>
-                        </div>
-                        <div class="border-l-4 border-blue-500 pl-4">
-                            <h5 class="font-semibold text-gray-800">ownable_model</h5>
-                            <p class="text-gray-600 text-sm">Default ownable model class (default: 'App\Models\Model')</p>
-                        </div>
-                        <div class="border-l-4 border-blue-500 pl-4">
-                            <h5 class="font-semibold text-gray-800">table_name</h5>
-                            <p class="text-gray-600 text-sm">Database table name for ownership records (default: 'ownerships')</p>
                         </div>
                     </div>
                 </div>
@@ -801,19 +515,7 @@ foreach ($history as $ownership) {
             <div class="grid md:grid-cols-4 gap-8">
                 <div class="md:col-span-2">
                     <h3 class="text-2xl font-bold mb-4">Laravel Ownable</h3>
-                    <p class="text-gray-300 mb-4">A powerful Laravel package to handle ownership relationships between Eloquent models with flexibility, history tracking, and automatic cleanup.</p>
-                    <div class="flex space-x-4">
-                        <a href="https://github.com/sowailem/ownable" class="text-gray-300 hover:text-white transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
-                        </a>
-                        <a href="https://packagist.org/packages/sowailem/ownable" class="text-gray-300 hover:text-white transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0L1.608 6v12L12 24l10.392-6V6L12 0zm-1.073 10.5H6.5v3h4.427c.235 0 .469-.082.646-.25.177-.167.277-.4.277-.646v-1.208c0-.246-.1-.479-.277-.646-.177-.168-.411-.25-.646-.25zm5.146 0h-4.427v3h4.427c.235 0 .469-.082.646-.25.177-.167.277-.4.277-.646v-1.208c0-.246-.1-.479-.277-.646-.177-.168-.411-.25-.646-.25z"/>
-                            </svg>
-                        </a>
-                    </div>
+                    <p class="text-gray-300 mb-4">A powerful Laravel package to handle ownership relationships between Eloquent models with zero-config, history tracking, and automatic API injection.</p>
                 </div>
                 
                 <div>
@@ -822,28 +524,16 @@ foreach ($history as $ownership) {
                         <li><a href="#installation" class="hover:text-white transition-colors">Installation</a></li>
                         <li><a href="#usage" class="hover:text-white transition-colors">Usage Guide</a></li>
                         <li><a href="#api" class="hover:text-white transition-colors">API Reference</a></li>
-                        <li><a href="#examples" class="hover:text-white transition-colors">Examples</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Support</h4>
-                    <ul class="space-y-2 text-gray-300">
-                        <li><a href="https://github.com/sowailem/ownable/issues" class="hover:text-white transition-colors">Report Issues</a></li>
-                        <li><a href="https://github.com/sowailem/ownable/discussions" class="hover:text-white transition-colors">Discussions</a></li>
-                        <li><a href="mailto:abdullah.sowailem@email.com" class="hover:text-white transition-colors">Contact</a></li>
                     </ul>
                 </div>
             </div>
             
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 Abdullah Sowailem. Licensed under the MIT License.</p>
-                <p class="mt-2">Documentation generated on August 10, 2025</p>
+                <p>&copy; 2026 Abdullah Sowailem. Licensed under the MIT License.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Mobile Navigation Toggle -->
     <script>
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -857,36 +547,6 @@ foreach ($history as $ownership) {
                     });
                 }
             });
-        });
-
-        // Add mobile navigation toggle
-        const nav = document.querySelector('nav');
-        const header = document.querySelector('header');
-        
-        // Create mobile menu button
-        const mobileMenuButton = document.createElement('button');
-        mobileMenuButton.className = 'md:hidden p-2 text-gray-600 hover:text-primary';
-        mobileMenuButton.innerHTML = `
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-        `;
-        
-        // Insert mobile menu button
-        header.querySelector('.flex').appendChild(mobileMenuButton);
-        
-        // Toggle mobile menu
-        mobileMenuButton.addEventListener('click', function() {
-            nav.classList.toggle('hidden');
-            nav.classList.toggle('flex');
-            nav.classList.toggle('flex-col');
-            nav.classList.toggle('absolute');
-            nav.classList.toggle('top-full');
-            nav.classList.toggle('left-0');
-            nav.classList.toggle('right-0');
-            nav.classList.toggle('bg-white');
-            nav.classList.toggle('shadow-lg');
-            nav.classList.toggle('p-4');
         });
     </script>
 </body>
