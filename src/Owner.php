@@ -69,7 +69,7 @@ class Owner
     public function check($owner, $ownable)
     {
         if (!($owner instanceof Model) || !($ownable instanceof Model)) {
-            throw new InvalidArgumentException('Owner and ownable must be Eloquent models');
+            throw new \InvalidArgumentException('Owner and ownable must be Eloquent models');
         }
 
         return Ownership::where('owner_id', $owner->getKey())
@@ -78,5 +78,42 @@ class Owner
             ->where('ownable_type', get_class($ownable))
             ->where('is_current', true)
             ->exists();
+    }
+
+    /**
+     * Remove ownership of an ownable entity.
+     * 
+     * @param \Illuminate\Database\Eloquent\Model $ownable The ownable entity
+     * @return bool
+     */
+    public function remove($ownable)
+    {
+        if (!($ownable instanceof Model)) {
+            throw new \InvalidArgumentException('Ownable must be an Eloquent model');
+        }
+
+        return (bool) Ownership::where('ownable_id', $ownable->getKey())
+            ->where('ownable_type', get_class($ownable))
+            ->where('is_current', true)
+            ->update(['is_current' => false]);
+    }
+
+    /**
+     * Get the current owner of an ownable entity.
+     * 
+     * @param \Illuminate\Database\Eloquent\Model $ownable The ownable entity
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function currentOwner($ownable)
+    {
+        if (!($ownable instanceof Model)) {
+            throw new \InvalidArgumentException('Ownable must be an Eloquent model');
+        }
+
+        return Ownership::where('ownable_id', $ownable->getKey())
+            ->where('ownable_type', get_class($ownable))
+            ->where('is_current', true)
+            ->first()
+            ?->owner;
     }
 }
