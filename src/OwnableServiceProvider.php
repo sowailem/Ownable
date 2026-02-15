@@ -3,6 +3,7 @@
 namespace Sowailem\Ownable;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -53,8 +54,26 @@ class OwnableServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(dirname(__DIR__).'/database/migrations');
 
+        $this->registerRoutes();
+
         Blade::if('owns', function ($owner, $ownable) {
             return app('ownable.owner')->check($owner, $ownable);
+        });
+    }
+
+    /**
+     * Register the package routes.
+     *
+     * @return void
+     */
+    protected function registerRoutes(): void
+    {
+        Route::group([
+            'prefix' => config('ownable.routes.prefix', 'api/ownable'),
+            'middleware' => config('ownable.routes.middleware', ['api']),
+        ], function () {
+            Route::post('ownerships', [\Sowailem\Ownable\Http\Controllers\OwnershipController::class, 'store']);
+            Route::get('ownerships', [\Sowailem\Ownable\Http\Controllers\OwnershipController::class, 'index']);
         });
     }
 }

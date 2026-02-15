@@ -22,4 +22,17 @@ return [
     |
     */
     'ownable_model' => env('OWNABLE_OWNABLE_MODEL', 'App\Models\Model'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Routes Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This configuration controls the package's registration endpoints.
+    |
+    */
+    'routes' => [
+        'prefix' => 'api/ownable',
+        'middleware' => ['api'],
+    ],
 ];

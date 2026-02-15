@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Facade;
  * This facade provides a static interface to the Owner service,
  * allowing easy access to ownership management functionality.
  * 
- * @method static mixed give(\Illuminate\Database\Eloquent\Model $owner, \Sowailem\Ownable\Contracts\Ownable $ownable)
- * @method static mixed transfer(\Illuminate\Database\Eloquent\Model $fromOwner, \Illuminate\Database\Eloquent\Model $toOwner, \Sowailem\Ownable\Contracts\Ownable $ownable)
- * @method static bool check(\Illuminate\Database\Eloquent\Model $owner, \Sowailem\Ownable\Contracts\Ownable $ownable)
+ * @method static \Sowailem\Ownable\Models\Ownership give(\Illuminate\Database\Eloquent\Model $owner, \Illuminate\Database\Eloquent\Model $ownable)
+ * @method static \Sowailem\Ownable\Models\Ownership transfer(\Illuminate\Database\Eloquent\Model $fromOwner, \Illuminate\Database\Eloquent\Model $toOwner, \Illuminate\Database\Eloquent\Model $ownable)
+ * @method static bool check(\Illuminate\Database\Eloquent\Model $owner, \Illuminate\Database\Eloquent\Model $ownable)
  * 
  * @see \Sowailem\Ownable\Owner
  */
