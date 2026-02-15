@@ -16,6 +16,21 @@ use Sowailem\Ownable\Models\Ownership;
 class Owner
 {
     /**
+     * @var \Sowailem\Ownable\Services\OwnershipService
+     */
+    protected $ownershipService;
+
+    /**
+     * Create a new Owner instance.
+     * 
+     * @param \Sowailem\Ownable\Services\OwnershipService $ownershipService
+     */
+    public function __construct(\Sowailem\Ownable\Services\OwnershipService $ownershipService)
+    {
+        $this->ownershipService = $ownershipService;
+    }
+
+    /**
      * Give ownership of an ownable entity to an owner.
      * 
      * @param \Illuminate\Database\Eloquent\Model $owner The owner model
@@ -25,23 +40,22 @@ class Owner
      */
     public function give($owner, $ownable)
     {
-        if (!($owner instanceof Model) || !($ownable instanceof Model)) {
-            throw new \InvalidArgumentException('Owner and ownable must be Eloquent models');
+        if (!($owner instanceof Model)) {
+            throw new \InvalidArgumentException('Owner must be an Eloquent model');
         }
 
-        // Mark existing ownerships as not current
-        Ownership::where('ownable_id', $ownable->getKey())
-            ->where('ownable_type', get_class($ownable))
-            ->where('is_current', true)
-            ->update(['is_current' => false]);
+        if (!($ownable instanceof Model)) {
+            throw new \InvalidArgumentException('Ownable must implement Sowailem\Ownable\Contracts\Ownable');
+        }
 
-        return Ownership::create([
+        $this->ownershipService->storeOwnership([
             'owner_id' => $owner->getKey(),
             'owner_type' => get_class($owner),
             'ownable_id' => $ownable->getKey(),
             'ownable_type' => get_class($ownable),
-            'is_current' => true,
         ]);
+
+        return $ownable;
     }
 
     /**
@@ -55,7 +69,24 @@ class Owner
      */
     public function transfer($fromOwner, $toOwner, $ownable)
     {
-        return $this->give($toOwner, $ownable);
+        if (!($fromOwner instanceof Model) || !($toOwner instanceof Model)) {
+            throw new \InvalidArgumentException('Owners must be Eloquent models');
+        }
+
+        if (!($ownable instanceof Model)) {
+            throw new \InvalidArgumentException('Ownable must implement Sowailem\Ownable\Contracts\Ownable');
+        }
+
+        $this->ownershipService->transferOwnership([
+            'from_owner_id' => $fromOwner->getKey(),
+            'from_owner_type' => get_class($fromOwner),
+            'to_owner_id' => $toOwner->getKey(),
+            'to_owner_type' => get_class($toOwner),
+            'ownable_id' => $ownable->getKey(),
+            'ownable_type' => get_class($ownable),
+        ]);
+
+        return $ownable;
     }
 
     /**
@@ -68,16 +99,20 @@ class Owner
      */
     public function check($owner, $ownable)
     {
-        if (!($owner instanceof Model) || !($ownable instanceof Model)) {
-            throw new \InvalidArgumentException('Owner and ownable must be Eloquent models');
+        if (!($owner instanceof Model)) {
+            throw new \InvalidArgumentException('Owner must be an Eloquent model');
         }
 
-        return Ownership::where('owner_id', $owner->getKey())
-            ->where('owner_type', get_class($owner))
-            ->where('ownable_id', $ownable->getKey())
-            ->where('ownable_type', get_class($ownable))
-            ->where('is_current', true)
-            ->exists();
+        if (!($ownable instanceof Model)) {
+            throw new \InvalidArgumentException('Ownable must implement Sowailem\Ownable\Contracts\Ownable');
+        }
+
+        return $this->ownershipService->checkOwnership([
+            'owner_id' => $owner->getKey(),
+            'owner_type' => get_class($owner),
+            'ownable_id' => $ownable->getKey(),
+            'ownable_type' => get_class($ownable),
+        ]);
     }
 
     /**
@@ -92,10 +127,10 @@ class Owner
             throw new \InvalidArgumentException('Ownable must be an Eloquent model');
         }
 
-        return (bool) Ownership::where('ownable_id', $ownable->getKey())
-            ->where('ownable_type', get_class($ownable))
-            ->where('is_current', true)
-            ->update(['is_current' => false]);
+        return $this->ownershipService->removeOwnership([
+            'ownable_id' => $ownable->getKey(),
+            'ownable_type' => get_class($ownable),
+        ]);
     }
 
     /**
@@ -110,10 +145,9 @@ class Owner
             throw new \InvalidArgumentException('Ownable must be an Eloquent model');
         }
 
-        return Ownership::where('ownable_id', $ownable->getKey())
-            ->where('ownable_type', get_class($ownable))
-            ->where('is_current', true)
-            ->first()
-            ?->owner;
+        return $this->ownershipService->getCurrentOwnership(
+            get_class($ownable),
+            $ownable->getKey()
+        )?->owner;
     }
 }

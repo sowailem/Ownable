@@ -34,7 +34,7 @@ class OwnableServiceProvider extends ServiceProvider
         }
 
         $this->app->singleton('ownable.owner', function ($app) {
-            return new \Sowailem\Ownable\Owner();
+            return new \Sowailem\Ownable\Owner($app->make(\Sowailem\Ownable\Services\OwnershipService::class));
         });
     }
 
