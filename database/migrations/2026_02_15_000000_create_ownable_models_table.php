@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('model_class')->unique();
             $table->string('name')->unique();
             $table->string('description')->nullable();
+            $table->json('response_fields')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

@@ -17,6 +17,13 @@ class AutomaticOwnershipAttachmentTest extends TestCase
     {
         parent::setUp();
 
+        // Register Post as ownable model in DB for attachment tests
+        \Sowailem\Ownable\Models\OwnableModel::create([
+            'name' => 'post',
+            'model_class' => Post::class,
+            'is_active' => true,
+        ]);
+
         Route::get('test-post/{post}', function (Post $post) {
             return response()->json($post);
         });

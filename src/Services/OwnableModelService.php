@@ -77,15 +77,11 @@ class OwnableModelService
     public function getActiveModelClassesWithNames(): array
     {
         $dynamicModels = OwnableModel::where('is_active', true)
+            ->get()
             ->pluck('name', 'model_class')
             ->toArray();
 
         $configModels = config('ownable.ownable_models', []);
-        
-        // For config models, we don't have a name in config yet, 
-        // but we can try to guess it or just use the FQN.
-        // If they want names for config models, they should probably move them to DB.
-        // For now, let's just use the class name as the name if not present in DB.
         
         $result = $dynamicModels;
         foreach ($configModels as $class) {
@@ -98,12 +94,25 @@ class OwnableModelService
     }
 
     /**
-     * Get all active ownable model classes.
+     * Get all active ownable models (the full objects).
      *
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getActiveModelClasses(): array
+    public function getActiveModels(): \Illuminate\Database\Eloquent\Collection
     {
-        return array_keys($this->getActiveModelClassesWithNames());
+        $dynamicModels = OwnableModel::where('is_active', true)->get();
+        
+        $configModels = config('ownable.ownable_models', []);
+        foreach ($configModels as $class) {
+            if (!$dynamicModels->contains('model_class', $class)) {
+                $dynamicModels->push(new OwnableModel([
+                    'name' => class_basename($class),
+                    'model_class' => $class,
+                    'is_active' => true
+                ]));
+            }
+        }
+        
+        return $dynamicModels;
     }
 }

@@ -33,6 +33,11 @@ class AttachOwnershipMiddleware
     protected $ownableModelService;
 
     /**
+     * @var \Illuminate\Database\Eloquent\Collection
+     */
+    protected $activeOwnableModels;
+
+    /**
      * @param \Sowailem\Ownable\Services\OwnershipService $ownershipService
      * @param \Sowailem\Ownable\Services\OwnableModelService $ownableModelService
      */
@@ -52,6 +57,7 @@ class AttachOwnershipMiddleware
     public function handle(Request $request, Closure $next): mixed
     {
         $this->ownableModelAliases = $this->ownableModelService->getActiveModelClassesWithNames();
+        $this->activeOwnableModels = $this->ownableModelService->getActiveModels();
 
         $response = $next($request);
 
@@ -63,6 +69,17 @@ class AttachOwnershipMiddleware
             $data = $response->getOriginalContent();
             $modifiedData = $this->attachOwnershipToData($data);
             $response->setData($modifiedData);
+            
+            // Debug if needed
+            // fwrite(STDERR, "Modified Data: " . print_r($response->getData(true), true) . "\n");
+        } else {
+            // Handle case where response content is just JSON string
+            $content = $response->getContent();
+            $data = json_decode($content, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $modifiedData = $this->attachOwnershipToData($data);
+                $response->setContent(json_encode($modifiedData));
+            }
         }
 
         return $response;
@@ -84,26 +101,32 @@ class AttachOwnershipMiddleware
             $class = get_class($data);
             $key = config('ownable.automatic_attachment.key', 'ownership');
             
-            if (isset($this->ownableModelAliases[$class])) {
+            $isOwnable = isset($this->ownableModelAliases[$class]);
+            $ownedItemsLoaded = $data->relationLoaded('ownedItems');
+
+            if ($ownedItemsLoaded) {
+                $array = $data->toArray();
+
+                if (isset($array['owned_items'])) {
+                    $array['owned_items'] = $this->transformOwnedItems($array['owned_items']);
+                }
+
+                if ($isOwnable) {
+                    $ownership = $this->ownershipService->getCurrentOwnership($class, $data->getKey());
+
+                    if ($ownership) {
+                        $array[$key] = $this->transformOwnership($ownership);
+                    }
+                }
+                
+                return $array;
+            }
+
+            if ($isOwnable) {
                 $ownership = $this->ownershipService->getCurrentOwnership($class, $data->getKey());
 
                 if ($ownership) {
-                    $array = $data->toArray();
-                    $ownershipArray = $ownership->toArray();
-                    
-                    // Replace class names with unique names
-                    if (isset($this->ownableModelAliases[$ownershipArray['ownable_type']])) {
-                        $ownershipArray['ownable_type'] = $this->ownableModelAliases[$ownershipArray['ownable_type']];
-                    }
-                    
-                    if (isset($this->ownableModelAliases[$ownershipArray['owner_type']])) {
-                        $ownershipArray['owner_type'] = $this->ownableModelAliases[$ownershipArray['owner_type']];
-                    } else {
-                        $ownershipArray['owner_type'] = class_basename($ownershipArray['owner_type']);
-                    }
-
-                    $array[$key] = $ownershipArray;
-                    return $array;
+                    $data->setAttribute($key, $this->transformOwnership($ownership));
                 }
             }
             
@@ -111,19 +134,86 @@ class AttachOwnershipMiddleware
         }
 
         if (is_array($data)) {
+            // Check if this array looks like a serialized model with owned_items
+            if (isset($data['owned_items'])) {
+                $data['owned_items'] = $this->transformOwnedItems($data['owned_items']);
+            }
+
             foreach ($data as $key => $value) {
                 $data[$key] = $this->attachOwnershipToData($value);
             }
             return $data;
         }
 
-        if ($data instanceof \ArrayAccess) {
-            foreach ($data as $key => $value) {
-                $data[$key] = $this->attachOwnershipToData($value);
-            }
+        return $data;
+    }
+
+    /**
+     * Transform an ownership model for response.
+     *
+     * @param Ownership $ownership
+     * @return array
+     */
+    protected function transformOwnership(Ownership $ownership): array
+    {
+        $ownershipArray = $ownership->toArray();
+        
+        // Replace class names with unique names
+        if (isset($this->ownableModelAliases[$ownershipArray['ownable_type']])) {
+            $ownershipArray['ownable_type'] = $this->ownableModelAliases[$ownershipArray['ownable_type']];
+        }
+        
+        if (isset($this->ownableModelAliases[$ownershipArray['owner_type']])) {
+            $ownershipArray['owner_type'] = $this->ownableModelAliases[$ownershipArray['owner_type']];
+        } else {
+            $ownershipArray['owner_type'] = class_basename($ownershipArray['owner_type']);
         }
 
-        return $data;
+        return $ownershipArray;
+    }
+
+    /**
+     * Transform owned items to grouped and filtered format.
+     *
+     * @param array $ownedItems
+     * @return array
+     */
+    protected function transformOwnedItems(array $ownedItems): array
+    {
+        if (empty($ownedItems)) {
+            return [];
+        }
+
+        // Group by ownable_type
+        $grouped = [];
+        foreach ($ownedItems as $item) {
+            if (!isset($item['ownable_type']) || !isset($item['ownable'])) {
+                continue;
+            }
+
+            $type = $item['ownable_type'];
+            $ownable = $item['ownable'];
+
+            // Find matching OwnableModel config
+            $ownableModel = $this->activeOwnableModels->firstWhere('model_class', $type);
+            
+            $typeName = $ownableModel ? $ownableModel->name : class_basename($type);
+            $fields = $ownableModel ? $ownableModel->response_fields : null;
+
+            if ($fields && is_array($fields)) {
+                $ownable = array_intersect_key($ownable, array_flip($fields));
+            }
+
+            $grouped[$typeName][] = $ownable;
+        }
+
+        // Convert to the required structure: [{ "type": [items] }, ...]
+        $result = [];
+        foreach ($grouped as $name => $items) {
+            $result[] = [$name => $items];
+        }
+
+        return $result;
     }
 
     /**
@@ -158,7 +248,7 @@ class AttachOwnershipMiddleware
     protected function isOwnable(Model $model): bool
     {
         $class = get_class($model);
-
-        return in_array($class, $this->ownableModels);
+        
+        return isset($this->ownableModelAliases[$class]);
     }
 }

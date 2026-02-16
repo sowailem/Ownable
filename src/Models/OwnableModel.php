@@ -32,6 +32,7 @@ class OwnableModel extends Model
         'name',
         'model_class',
         'description',
+        'response_fields',
         'is_active',
     ];
 
@@ -42,5 +43,6 @@ class OwnableModel extends Model
      */
     protected $casts = [
         'is_active' => 'boolean',
+        'response_fields' => 'array',
     ];
 }

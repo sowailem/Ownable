@@ -19,6 +19,7 @@ class UpdateOwnableModelRequest extends FormRequest
         return [
             'model_class' => 'string|unique:ownable_models,model_class,' . $id,
             'description' => 'nullable|string',
+            'response_fields' => 'nullable|array',
             'is_active' => 'boolean',
         ];
     }

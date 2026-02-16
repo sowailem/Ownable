@@ -18,6 +18,7 @@ class CreateOwnableModelRequest extends FormRequest
             'name' => 'required|string|unique:ownable_models,name',
             'model_class' => 'required|string|unique:ownable_models,model_class',
             'description' => 'nullable|string',
+            'response_fields' => 'nullable|array',
             'is_active' => 'boolean',
         ];
     }
