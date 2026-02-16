@@ -5,8 +5,8 @@ namespace Sowailem\Ownable;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-//use Illuminate\Contracts\Http\Kernel;
-//use Sowailem\Ownable\Http\Middleware\AttachOwnershipMiddleware;
+use Illuminate\Contracts\Http\Kernel;
+use Sowailem\Ownable\Http\Middleware\AttachOwnershipMiddleware;
 
 /**
  * Service provider for the Ownable package.
@@ -132,8 +132,8 @@ class OwnableServiceProvider extends ServiceProvider
      */
     protected function registerMiddleware(): void
     {
-//        $kernel = $this->app->make(Kernel::class);
-//        $kernel->pushMiddleware(AttachOwnershipMiddleware::class);
+        $kernel = $this->app->make(Kernel::class);
+        $kernel->pushMiddleware(AttachOwnershipMiddleware::class);
     }
 
     /**
