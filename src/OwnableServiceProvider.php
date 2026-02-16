@@ -88,8 +88,24 @@ class OwnableServiceProvider extends ServiceProvider
             // Silently fail if a database is not reachable or other issues
         }
 
-        $ownerModel = config('ownable.owner_model');
+        $ownerModels = config('ownable.owner_models',[]);
         $macroName = config('ownable.macro_name', 'owner');
+
+        $ownerModels = array_unique(array_merge($ownerModels, $ownableModels));
+        // Register macro for owner models to access owned items
+        foreach ($ownerModels as $ownerModel) {
+            if (class_exists($ownerModel)) {
+                \Illuminate\Database\Eloquent\Model::resolveRelationUsing('ownedItems', function ($thisModel) use ($ownerModel) {
+                    if ($thisModel instanceof $ownerModel) {
+                        return $thisModel->hasMany(\Sowailem\Ownable\Models\Ownership::class, 'owner_id', $thisModel->getKeyName())
+                            ->where('owner_type', $thisModel->getMorphClass())
+                            ->where('is_current', true)
+                            ->with('ownable');
+                    }
+                    return null;
+                });
+            }
+        }
 
         foreach ($ownableModels as $modelClass) {
             if (class_exists($modelClass)) {

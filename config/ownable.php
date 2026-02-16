@@ -3,14 +3,14 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Owner Model
+    | Owner Models
     |--------------------------------------------------------------------------
     |
-    | This is the model that will be used as the owner in ownership relationships.
+    | These are the models that will be used as the owner in ownership relationships.
     | Typically this would be your User model or any other model that can own things.
     |
     */
-    'owner_model' => env('OWNABLE_OWNER_MODEL', 'App\Models\User'),
+    'owner_models' => env('OWNABLE_OWNER_MODEL', ['App\Models\User']),
 
     /*
     |--------------------------------------------------------------------------
