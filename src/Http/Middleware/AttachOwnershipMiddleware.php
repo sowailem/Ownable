@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 use Sowailem\Ownable\Models\Ownership;
 use Sowailem\Ownable\Models\OwnableModel;
 use Illuminate\Database\Eloquent\Model;
@@ -256,7 +257,7 @@ class AttachOwnershipMiddleware
             if ($fields && is_array($fields)) {
                 $ownable = array_intersect_key($ownable, array_flip($fields));
             }
-
+            $typeName = Str::lower(Str::plural($typeName));
             $grouped[$typeName][] = $ownable;
         }
 
