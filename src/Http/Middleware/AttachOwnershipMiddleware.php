@@ -117,7 +117,7 @@ class AttachOwnershipMiddleware
 
             if (is_array($data)) {
                 if ($ownedItemsLoaded) {
-                    $data['owned_items'] = $this->transformOwnedItems($original->ownedItems->toArray());
+                    $data['ownables'] = $this->transformOwnedItems($original->ownedItems->toArray());
                 }
 
                 if ($isOwnable) {
@@ -129,7 +129,7 @@ class AttachOwnershipMiddleware
                 }
 
                 foreach ($data as $k => $v) {
-                    if ($k !== 'owned_items' && $k !== $key) {
+                    if ($k !== 'ownables' && $k !== $key) {
                         // This part is tricky because we don't easily know the original for nested items if they are not relations
                         // But if they are relations, we might find them in $original.
                         if ($original->relationLoaded($k)) {
@@ -153,8 +153,8 @@ class AttachOwnershipMiddleware
             if ($ownedItemsLoaded) {
                 $array = $data->toArray();
 
-                if (isset($array['owned_items'])) {
-                    $array['owned_items'] = $this->transformOwnedItems($array['owned_items']);
+                if (isset($array['ownables'])) {
+                    $array['ownables'] = $this->transformOwnedItems($array['ownables']);
                 }
 
                 if ($isOwnable) {
@@ -180,8 +180,8 @@ class AttachOwnershipMiddleware
         }
 
         if (is_array($data)) {
-            if (isset($data['owned_items']) && $original instanceof Model && $original->relationLoaded('ownedItems')) {
-                $data['owned_items'] = $this->transformOwnedItems($original->ownedItems->toArray());
+            if (isset($data['ownables']) && $original instanceof Model && $original->relationLoaded('ownedItems')) {
+                $data['ownables'] = $this->transformOwnedItems($original->ownedItems->toArray());
             }
 
             foreach ($data as $key => $value) {
